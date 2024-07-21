@@ -1,5 +1,8 @@
-from flask import Flask
+import re
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
+import requests
 
 app = Flask(__name__)
 
@@ -35,8 +38,18 @@ def get_drink(id):
     drink = Drink.query.get_or_404(id)
     return drink.as_dict()
 
+@app.route('/drinks', methods=['POST'])
+def add_drink():
+    print(request.json)
+    drink = Drink(**request.json)
+    try:
+        db.session.add(drink)
+        db.session.commit()
+        return {'id': drink.id}
+    except exc.IntegrityError:
+        return {'error':f'drink {drink.name!r} already exists'}
+
 if __name__ == '__main__':
-    
     with app.app_context():
         # reset instance/data.db
         db.drop_all()
