@@ -30,6 +30,11 @@ def get_drinks():
     print(result)
     return result
 
+@app.route('/drinks/<id>')
+def get_drink(id):
+    drink = Drink.query.get_or_404(id)
+    return drink.as_dict()
+
 if __name__ == '__main__':
     
     with app.app_context():
