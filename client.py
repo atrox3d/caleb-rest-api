@@ -43,3 +43,4 @@ for id in range(1, 5):
     except requests.HTTPError as he:
         print(he)
 print(delete_drink(3))
+print(delete_drink(3))
