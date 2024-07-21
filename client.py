@@ -42,4 +42,4 @@ for id in range(1, 5):
         print(get_drink(id))
     except requests.HTTPError as he:
         print(he)
-delete_drink(3)
+print(delete_drink(3))
