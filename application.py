@@ -11,6 +11,11 @@ class Drink(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     description = db.Column(db.String(120))
 
+    def as_dict(self):
+        names = 'name description'.split()
+        return {k: v for k, v in vars(self).items() if k in names}
+        return {'name': self.name, 'description': self.description}
+
     def __repr__(self) -> str:
         return f'{self.name} - {self.description}'
 
@@ -20,7 +25,10 @@ def index():
 
 @app.route('/drinks')
 def get_drinks():
-    return {'drinks': 'drink_data'}
+    drinks = Drink.query.all()
+    result = {'drinks': [drink.as_dict() for drink in drinks]}
+    print(result)
+    return result
 
 if __name__ == '__main__':
     
