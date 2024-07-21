@@ -49,6 +49,18 @@ def add_drink():
     except exc.IntegrityError:
         return {'error':f'drink {drink.name!r} already exists'}
 
+
+@app.route('/drinks/<id>', methods=['DELETE'])
+def delete_drink(id):
+    drink = Drink.query.get(id)
+    if not drink:
+        return {'error': 'not found'}
+    
+    db.session.delete(drink)
+    db.session.commit()
+    return {'message': 'deleted'}
+
+
 if __name__ == '__main__':
     with app.app_context():
         # reset instance/data.db
